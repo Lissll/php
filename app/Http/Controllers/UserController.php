@@ -11,22 +11,33 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = Auth::user()->isManager()
+            ? User::where('role', User::ROLE_CLIENT)->orderBy('name')->get()
+            : User::orderBy('name')->get();
+
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
+        abort_unless(Auth::user()->isAdmin() || Auth::user()->isManager(), 403);
+
         return view('users.create');
     }
 
     public function store(Request $request)
     {
+        abort_unless(Auth::user()->isAdmin() || Auth::user()->isManager(), 403);
+
+        $roleRule = Auth::user()->isAdmin()
+            ? 'required|in:admin,manager,master,client'
+            : 'required|in:client';
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required|in:admin,manager,master,client',
+            'role' => $roleRule,
         ]);
 
         $user = User::create([
@@ -55,10 +66,18 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        if (Auth::user()->isManager()) {
+            abort_unless($user->isClient(), 403, 'Менеджер может редактировать только учётные записи клиентов');
+        }
+
+        $roleRule = Auth::user()->isAdmin()
+            ? 'required|in:admin,manager,master,client'
+            : 'required|in:client';
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,manager,master,client',
+            'role' => $roleRule,
         ]);
 
         $user->update($validated);
@@ -72,6 +91,13 @@ class UserController extends Controller
         if ($user->id === Auth::id()) {
             return redirect()->route('users.index')
                 ->with('error', 'Вы не можете удалить самого себя');
+        }
+
+        if (Auth::user()->isManager()) {
+            if (! $user->isClient()) {
+                return redirect()->route('users.index')
+                    ->with('error', 'Менеджер может удалять только учётные записи клиентов');
+            }
         }
 
         $user->delete();

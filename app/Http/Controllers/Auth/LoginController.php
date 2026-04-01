@@ -22,8 +22,6 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            
-            // Перенаправляем на дашборд, а не на home
             return redirect()->intended('/dashboard');
         }
 

@@ -4,7 +4,13 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-    <h2 class="page-heading mb-0">Команда и пользователи</h2>
+    <h2 class="page-heading mb-0">
+        @if(Auth::user()->isManager())
+            Клиенты
+        @else
+            Команда и пользователи
+        @endif
+    </h2>
     <a href="{{ route('users.create') }}" class="btn btn-primary">
         Создать пользователя
     </a>
@@ -43,10 +49,16 @@
                             </td>
                             <td>{{ $user->created_at->format('d.m.Y') }}</td>
                             <td>
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">
-                                    Редактировать
-                                </a>
-                                @if($user->id !== Auth::id())
+                                @php
+                                    $canManage = Auth::user()->isAdmin()
+                                        || (Auth::user()->isManager() && $user->isClient());
+                                @endphp
+                                @if($canManage)
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">
+                                        Редактировать
+                                    </a>
+                                @endif
+                                @if($canManage && $user->id !== Auth::id())
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
