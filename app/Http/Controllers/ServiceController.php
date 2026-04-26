@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
-    // Публичная страница со списком услуг (доступна всем)
     public function publicIndex()
     {
         $services = Service::all();
@@ -21,8 +20,6 @@ class ServiceController extends Controller
         $services = Service::all();
         return view('services.index', compact('services'));
     }
-
-    // Управление услугами (только админ и менеджер)
     public function manage()
     {
         if (!Auth::user()->isAdmin() && !Auth::user()->isManager()) {

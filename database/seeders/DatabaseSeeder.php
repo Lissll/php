@@ -10,7 +10,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Создаем администратора
         User::create([
             'name' => 'Администратор',
             'email' => 'admin@gmail.com',
@@ -18,7 +17,6 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_ADMIN,
         ]);
         
-        // Создаем менеджера
         User::create([
             'name' => 'Менеджер',
             'email' => 'manager@gmail.com',
@@ -26,7 +24,6 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_MANAGER,
         ]);
         
-        // Создаем мастера
         User::create([
             'name' => 'Мастер',
             'email' => 'master@gmail.com',
@@ -34,7 +31,6 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_MASTER,
         ]);
         
-        // Создаем обычного пользователя
         User::create([
             'name' => 'Пользователь',
             'email' => 'user@gmail.com',
@@ -42,7 +38,6 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_CLIENT,
         ]);
         
-        // Вызываем сидер для услуг
         $this->call(ServiceSeeder::class);
     }
 }

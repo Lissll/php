@@ -155,11 +155,29 @@
     </div>
 </div>
 
-<!-- Форма для удаления -->
+<!-- Форма и модалка для удаления -->
 <form id="delete-service-form" method="POST" style="display: none;">
     @csrf
     @method('DELETE')
 </form>
+
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление услуги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить услугу <strong id="delete-service-name"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-service-btn">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -191,17 +209,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Удаление услуги
     const deleteButtons = document.querySelectorAll('.delete-service');
     const deleteForm = document.getElementById('delete-service-form');
+    const deleteServiceModal = new bootstrap.Modal(document.getElementById('deleteServiceModal'));
+    const deleteServiceNameElement = document.getElementById('delete-service-name');
+    const confirmDeleteServiceBtn = document.getElementById('confirm-delete-service-btn');
+    let deleteServiceAction = null;
     
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
             const id = this.dataset.id;
             const name = this.dataset.name;
-            
-            if (confirm(`Вы уверены, что хотите удалить услугу "${name}"?`)) {
-                deleteForm.action = `/services/${id}`;
-                deleteForm.submit();
-            }
+
+            deleteServiceAction = `/services/${id}`;
+            deleteServiceNameElement.textContent = name || 'без названия';
+            deleteServiceModal.show();
         });
+    });
+
+    confirmDeleteServiceBtn.addEventListener('click', function () {
+        if (!deleteServiceAction) return;
+        deleteForm.action = deleteServiceAction;
+        deleteForm.submit();
     });
 });
 </script>

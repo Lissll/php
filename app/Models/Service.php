@@ -19,9 +19,4 @@ class Service extends Model
     protected $casts = [
         'price' => 'decimal:2',
     ];
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
-    }
 }

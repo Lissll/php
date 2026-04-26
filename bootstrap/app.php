@@ -17,11 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
         ]);
         
-        // Можно добавить middleware для групп
         $middleware->web([
-            // здесь можно добавить middleware для всех web маршрутов
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })->create();

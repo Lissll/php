@@ -94,6 +94,24 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteAppointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление записи</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить эту запись?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-appointment-btn">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -173,39 +191,54 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     const deleteButtons = document.querySelectorAll('.delete-appointment');
+    const deleteAppointmentModal = new bootstrap.Modal(document.getElementById('deleteAppointmentModal'));
+    const confirmDeleteAppointmentBtn = document.getElementById('confirm-delete-appointment-btn');
+    let selectedDeleteButton = null;
+
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (!confirm('Удалить запись?')) return;
-            
-            const url = this.dataset.url;
-            const appointmentId = this.dataset.id;
-            const row = document.getElementById(`appointment-row-${appointmentId}`);
-            const btn = this;
-            
-            btn.disabled = true;
-            
-            fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (row) row.remove();
-                    showMessage('Запись удалена', 'success');
-                } else {
-                    showMessage('Ошибка: ' + (data.error || 'неизвестная'), 'error');
-                    btn.disabled = false;
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                showMessage('Ошибка сервера', 'error');
+        button.addEventListener('click', function() {
+            selectedDeleteButton = this;
+            deleteAppointmentModal.show();
+        });
+    });
+
+    confirmDeleteAppointmentBtn.addEventListener('click', function () {
+        if (!selectedDeleteButton) return;
+
+        const url = selectedDeleteButton.dataset.url;
+        const appointmentId = selectedDeleteButton.dataset.id;
+        const row = document.getElementById(`appointment-row-${appointmentId}`);
+        const btn = selectedDeleteButton;
+
+        btn.disabled = true;
+        confirmDeleteAppointmentBtn.disabled = true;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (row) row.remove();
+                deleteAppointmentModal.hide();
+                showMessage('Запись удалена', 'success');
+            } else {
+                showMessage('Ошибка: ' + (data.error || 'неизвестная'), 'error');
                 btn.disabled = false;
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            showMessage('Ошибка сервера', 'error');
+            btn.disabled = false;
+        })
+        .finally(() => {
+            confirmDeleteAppointmentBtn.disabled = false;
+            selectedDeleteButton = null;
         });
     });
 });

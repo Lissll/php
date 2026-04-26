@@ -54,14 +54,4 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_CLIENT;
     }
-
-    public function appointmentsAsClient()
-    {
-        return $this->hasMany(Appointment::class, 'client_id');
-    }
-
-    public function appointmentsAsMaster()
-    {
-        return $this->hasMany(Appointment::class, 'master_id');
-    }
 }

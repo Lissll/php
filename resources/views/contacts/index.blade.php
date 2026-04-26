@@ -122,7 +122,6 @@
     ymaps.ready(init);
     
     function init() {
-        // Координаты салона (Тверская улица, Москва)
         var salonCoordinates = [55.7646, 37.6062];
         
         var myMap = new ymaps.Map("map", {
@@ -148,11 +147,7 @@
         });
         
         myMap.geoObjects.add(myPlacemark);
-        
-        // Добавляем масштабирование колесиком мыши
         myMap.behaviors.enable('scrollZoom');
-        
-        // Добавляем возможность перетаскивания
         myMap.behaviors.enable('drag');
     }
 </script>

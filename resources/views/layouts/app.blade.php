@@ -25,34 +25,34 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('appointments.index') }}">
+                            <a class="nav-link {{ request()->routeIs('appointments.*') ? 'active' : '' }}" href="{{ route('appointments.index') }}">
                                 <i class="bi bi-calendar-check"></i> Записи
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('services.index') }}">
+                            <a class="nav-link {{ request()->routeIs('services.index') || request()->routeIs('services.public') ? 'active' : '' }}" href="{{ route('services.index') }}">
                                 <i class="bi bi-stars"></i> Услуги
                             </a>
                         </li>
                         @if(Auth::user()->isAdmin() || Auth::user()->isManager())
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('services.manage') }}">
+                                <a class="nav-link {{ request()->routeIs('services.manage') || request()->routeIs('services.edit') ? 'active' : '' }}" href="{{ route('services.manage') }}">
                                     <i class="bi bi-sliders"></i> Управление услугами
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">
+                                <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
                                     <i class="bi bi-people"></i> Команда
                                 </a>
                             </li>
                         @endif
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('profile.index') }}">
+                            <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.index') }}">
                                 <i class="bi bi-person"></i> Профиль
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contacts.index') }}">
+                            <a class="nav-link {{ request()->routeIs('contacts.*') ? 'active' : '' }}" href="{{ route('contacts.index') }}">
                                 <i class="bi bi-geo-alt"></i> Контакты
                             </a>
                         </li>
@@ -67,7 +67,7 @@
                     @endauth
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}"><i class="bi bi-key"></i> Вход</a>
+                            <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}"><i class="bi bi-key"></i> Вход</a>
                         </li>
                     @endguest
                 </ul>

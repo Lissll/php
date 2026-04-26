@@ -59,10 +59,13 @@
                                     </a>
                                 @endif
                                 @if($canManage && $user->id !== Auth::id())
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                    <form id="delete-user-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить пользователя?')">
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger open-delete-user-modal"
+                                                data-user-name="{{ $user->name }}"
+                                                data-form-id="delete-user-form-{{ $user->id }}">
                                             Удалить
                                         </button>
                                     </form>
@@ -75,4 +78,50 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление пользователя</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить пользователя <strong id="delete-user-name"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-user-btn">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modalElement = document.getElementById('deleteUserModal');
+    if (!modalElement) return;
+
+    const deleteUserModal = new bootstrap.Modal(modalElement);
+    const deleteUserName = document.getElementById('delete-user-name');
+    const confirmDeleteBtn = document.getElementById('confirm-delete-user-btn');
+    let targetFormId = null;
+
+    document.querySelectorAll('.open-delete-user-modal').forEach(button => {
+        button.addEventListener('click', function () {
+            targetFormId = this.dataset.formId;
+            deleteUserName.textContent = this.dataset.userName || 'этого пользователя';
+            deleteUserModal.show();
+        });
+    });
+
+    confirmDeleteBtn.addEventListener('click', function () {
+        if (!targetFormId) return;
+        const targetForm = document.getElementById(targetFormId);
+        if (targetForm) targetForm.submit();
+    });
+});
+</script>
+@endpush

@@ -90,10 +90,13 @@
                                         <a href="{{ route('services.edit', $service->id) }}" class="btn btn-sm btn-warning">
                                             Редактировать
                                         </a>
-                                        <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
+                                        <form id="delete-service-form-{{ $service->id }}" action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить услугу?')">
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger open-delete-service-modal"
+                                                    data-service-name="{{ $service->name }}"
+                                                    data-form-id="delete-service-form-{{ $service->id }}">
                                                 Удалить
                                             </button>
                                         </form>
@@ -107,4 +110,50 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteServiceConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление услуги</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить услугу <strong id="delete-service-public-name"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-service-public-btn">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modalElement = document.getElementById('deleteServiceConfirmModal');
+    if (!modalElement) return;
+
+    const deleteModal = new bootstrap.Modal(modalElement);
+    const serviceNameElement = document.getElementById('delete-service-public-name');
+    const confirmBtn = document.getElementById('confirm-delete-service-public-btn');
+    let targetFormId = null;
+
+    document.querySelectorAll('.open-delete-service-modal').forEach(button => {
+        button.addEventListener('click', function () {
+            targetFormId = this.dataset.formId;
+            serviceNameElement.textContent = this.dataset.serviceName || 'без названия';
+            deleteModal.show();
+        });
+    });
+
+    confirmBtn.addEventListener('click', function () {
+        if (!targetFormId) return;
+        const form = document.getElementById(targetFormId);
+        if (form) form.submit();
+    });
+});
+</script>
+@endpush

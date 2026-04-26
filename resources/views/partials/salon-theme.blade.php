@@ -9,7 +9,6 @@
     --salon-ink: #36292e;
     --salon-muted: #6b5a61;
 
-    /* Единая розово‑пудровая палитра (Bootstrap) */
     --bs-primary: #b06d80;
     --bs-primary-rgb: 176, 109, 128;
     --bs-secondary: #8f7a84;
@@ -50,7 +49,6 @@ h1, h2, h3, h4, h5, h6,
     letter-spacing: -0.02em;
 }
 
-/* Цвет заголовков по умолчанию (не задаём на h5/h6 глобально — ломает контраст на цветных карточках) */
 h1, h2, h3, h4 {
     color: var(--salon-ink);
 }
@@ -59,7 +57,6 @@ main.container {
     padding-bottom: 3rem;
 }
 
-/* ——— Шапка ——— */
 .navbar-salon {
     background: rgba(255, 255, 255, 0.92) !important;
     backdrop-filter: blur(10px);
@@ -97,6 +94,12 @@ main.container {
     transform: none;
 }
 
+.navbar-salon .nav-link.active {
+    color: #fff !important;
+    background: linear-gradient(135deg, #b06d80 0%, #9a5f72 100%);
+    box-shadow: 0 4px 12px rgba(176, 109, 128, 0.22);
+}
+
 .navbar-salon .btn-link.nav-link {
     color: var(--salon-muted) !important;
     text-decoration: none;
@@ -116,7 +119,6 @@ main.container {
     opacity: 0.7;
 }
 
-/* ——— Футер (спокойный, в тон сайту) ——— */
 .footer-salon {
     margin-top: auto;
     padding: 2rem 0 1.75rem;
@@ -130,7 +132,6 @@ main.container {
     color: rgba(255, 255, 255, 0.45) !important;
 }
 
-/* ——— Карточки ——— */
 .card {
     border: 1px solid rgba(54, 41, 46, 0.08);
     border-radius: var(--bs-border-radius-lg);
@@ -171,7 +172,6 @@ main.container {
     border-top: 1px solid rgba(54, 41, 46, 0.06);
 }
 
-/* ——— Кнопки ——— */
 .btn {
     font-family: var(--salon-font);
     font-weight: 600;
@@ -225,7 +225,6 @@ main.container {
     letter-spacing: 0.05em;
 }
 
-/* Статусы записей — приглушённые, но различимые */
 .status-badge,
 .status-pending,
 .status-confirmed,
@@ -259,7 +258,6 @@ main.container {
     color: #5c2f38;
 }
 
-/* Гостевой hero */
 .hero-salon {
     position: relative;
     background: linear-gradient(135deg, #e8d2d9 0%, #dcc0ca 45%, #cfaebb 100%);
@@ -395,7 +393,6 @@ main.container {
     font-weight: 400;
 }
 
-/* Карточки статистики: все в одной гамме (не Bootstrap «радуга») */
 .stat-card-soft {
     border: none !important;
     border-radius: var(--bs-border-radius-lg) !important;
@@ -403,7 +400,6 @@ main.container {
     color: #fff !important;
 }
 
-/* Явный светлый текст: глобальные h5 / .display-4 раньше окрашивали в тёмный на тёмном фоне */
 .stat-card-soft .card-body {
     color: #fff !important;
 }
@@ -459,11 +455,5 @@ main.container {
 .table-dark {
     --bs-table-bg: #4a4145;
     --bs-table-border-color: rgba(255, 255, 255, 0.07);
-}
-
-@media (max-width: 991.98px) {
-    .navbar-salon .navbar-collapse {
-        padding-top: 0.75rem;
-    }
 }
 </style>

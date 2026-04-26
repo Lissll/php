@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
-            $table->foreignId('master_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('master_id')->constrained('u sers')->onDelete('cascade');
             $table->dateTime('appointment_date');
             $table->string('status')->default('pending');
             $table->timestamps();
