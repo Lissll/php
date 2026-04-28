@@ -41,11 +41,15 @@ class AppointmentController extends Controller
         $clients = User::where('role', User::ROLE_CLIENT)->get();
         $selectedMaster = null;
         $availableSlots = [];
+        $selectedServiceId = request()->integer('service_id');
+        if (! $services->contains('id', $selectedServiceId)) {
+            $selectedServiceId = null;
+        }
         
         $user = Auth::user();
         $isAdminOrManager = $user->isAdmin() || $user->isManager();
         
-        return view('appointments.create', compact('services', 'masters', 'clients', 'selectedMaster', 'availableSlots', 'isAdminOrManager'));
+        return view('appointments.create', compact('services', 'masters', 'clients', 'selectedMaster', 'availableSlots', 'isAdminOrManager', 'selectedServiceId'));
     }
 
     public function getAvailableSlots(Request $request)

@@ -39,7 +39,8 @@
                             @foreach($services as $service)
                                 <option value="{{ $service->id }}" 
                                         data-duration="{{ $service->duration }}"
-                                        data-price="{{ $service->price }}">
+                                        data-price="{{ $service->price }}"
+                                        {{ (string) old('service_id', $selectedServiceId ?? '') === (string) $service->id ? 'selected' : '' }}>
                                     {{ $service->name }} - {{ $service->duration }} мин. - {{ number_format($service->price, 2) }} руб.
                                 </option>
                             @endforeach
@@ -152,6 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         checkFormComplete();
     });
+
+    if (serviceSelect.value) {
+        serviceSelect.dispatchEvent(new Event('change'));
+    }
     
     function loadAvailableSlots() {
         const masterId = masterSelect.value;

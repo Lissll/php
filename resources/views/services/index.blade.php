@@ -38,7 +38,7 @@
                 </div>
                 <div class="card-footer bg-transparent">
                     @if(Auth::user()->isClient())
-                        <a href="{{ route('appointments.create') }}" class="btn btn-primary btn-sm w-100">
+                        <a href="{{ route('appointments.create', ['service_id' => $service->id]) }}" class="btn btn-primary btn-sm w-100">
                             <i class="bi bi-calendar-plus"></i> Записаться
                         </a>
                     @endif
