@@ -19,10 +19,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 service-card">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-star-fill text-warning"></i> 
-                        {{ $service->name }}
-                    </h5>
+                    <h5 class="card-title">{{ $service->name }}</h5>
                     <p class="card-text">{{ $service->description }}</p>
                     <hr>
                     <div class="row">

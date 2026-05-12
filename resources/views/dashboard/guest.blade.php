@@ -23,10 +23,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card service-card h-100">
                         <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
-                                <h5 class="card-title mb-0" style="font-family: var(--salon-font); font-size: 1.1rem; font-weight: 600;">{{ $service->name }}</h5>
-                                <i class="bi bi-stars text-primary fs-5 opacity-75"></i>
-                            </div>
+                            <h5 class="card-title mb-2" style="font-family: var(--salon-font); font-size: 1.1rem; font-weight: 600;">{{ $service->name }}</h5>
                             <p class="card-text text-muted small flex-grow-1">{{ $service->description }}</p>
                             <hr class="my-3 opacity-25">
                             <div class="row g-2 small">
