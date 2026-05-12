@@ -88,34 +88,6 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-.contact-info p {
-    margin-bottom: 15px;
-}
-.contact-info strong {
-    color: var(--bs-primary);
-    font-weight: 600;
-}
-#map {
-    flex: 1;
-    min-height: 720px;
-    border-radius: 8px;
-    box-shadow: 0 8px 28px rgba(46, 42, 45, 0.08);
-}
-
-.contacts-left-column {
-    gap: 1.5rem;
-}
-
-@media (max-width: 767.98px) {
-    #map {
-        min-height: 420px;
-    }
-}
-</style>
-@endpush
-
 @push('scripts')
 <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU"></script>
 <script>

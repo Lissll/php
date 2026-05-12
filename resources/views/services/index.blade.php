@@ -51,15 +51,3 @@
     @endforelse
 </div>
 @endsection
-
-@push('styles')
-<style>
-.service-card {
-    transition: transform 0.3s;
-}
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-</style>
-@endpush

@@ -452,6 +452,48 @@ main.container {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Страница «Контакты» + карта */
+.contact-info p {
+    margin-bottom: 15px;
+}
+
+.contact-info strong {
+    color: var(--bs-primary);
+    font-weight: 600;
+}
+
+#map {
+    flex: 1;
+    min-height: 720px;
+    border-radius: 8px;
+    box-shadow: 0 8px 28px rgba(46, 42, 45, 0.08);
+}
+
+.contacts-left-column {
+    gap: 1.5rem;
+}
+
+.contacts-map-widget {
+    flex: 1;
+    min-height: 720px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(46, 42, 45, 0.08);
+}
+
+.contacts-map-widget iframe {
+    display: block;
+    border: 0;
+    min-height: 420px;
+}
+
+@media (max-width: 767.98px) {
+    #map,
+    .contacts-map-widget {
+        min-height: 420px;
+    }
+}
+
 .table-dark {
     --bs-table-bg: #4a4145;
     --bs-table-border-color: rgba(255, 255, 255, 0.07);
