@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -20,15 +19,11 @@ class UserController extends Controller
 
     public function create()
     {
-        abort_unless(Auth::user()->isAdmin() || Auth::user()->isManager(), 403);
-
         return view('users.create');
     }
 
     public function store(Request $request)
     {
-        abort_unless(Auth::user()->isAdmin() || Auth::user()->isManager(), 403);
-
         $roleRule = Auth::user()->isAdmin()
             ? 'required|in:admin,manager,master,client'
             : 'required|in:client';
@@ -43,7 +38,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
             'role' => $validated['role'],
         ]);
 

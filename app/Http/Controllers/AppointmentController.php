@@ -39,8 +39,6 @@ class AppointmentController extends Controller
         $services = Service::all();
         $masters = User::where('role', User::ROLE_MASTER)->get();
         $clients = User::where('role', User::ROLE_CLIENT)->get();
-        $selectedMaster = null;
-        $availableSlots = [];
         $selectedServiceId = request()->integer('service_id');
         if (! $services->contains('id', $selectedServiceId)) {
             $selectedServiceId = null;
@@ -49,7 +47,7 @@ class AppointmentController extends Controller
         $user = Auth::user();
         $isAdminOrManager = $user->isAdmin() || $user->isManager();
         
-        return view('appointments.create', compact('services', 'masters', 'clients', 'selectedMaster', 'availableSlots', 'isAdminOrManager', 'selectedServiceId'));
+        return view('appointments.create', compact('services', 'masters', 'clients', 'isAdminOrManager', 'selectedServiceId'));
     }
 
     public function getAvailableSlots(Request $request)
@@ -165,11 +163,6 @@ class AppointmentController extends Controller
 
     public function edit(Appointment $appointment)
     {
-        $user = Auth::user();
-        if (!$user->isAdmin() && !$user->isManager() && $user->id !== $appointment->client_id) {
-            abort(403);
-        }
-        
         $services = Service::all();
         $masters = User::where('role', User::ROLE_MASTER)->get();
         
@@ -220,7 +213,7 @@ class AppointmentController extends Controller
         }
     }
 
-    public function destroy(Request $request, Appointment $appointment)
+    public function destroy(Appointment $appointment)
     {
         try {
             $appointment->delete();

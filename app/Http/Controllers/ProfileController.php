@@ -32,7 +32,7 @@ class ProfileController extends Controller
             if (!Hash::check($validated['current_password'], $user->password)) {
                 return back()->withErrors(['current_password' => 'Текущий пароль неверен']);
             }
-            $user->password = Hash::make($validated['new_password']);
+            $user->password = $validated['new_password'];
         }
         
         $user->save();
